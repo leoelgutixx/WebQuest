@@ -8,231 +8,230 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <!-- Chosen Palette: Warm Neutrals with Blue Accent -->
-    <!-- Application Structure Plan: The SPA is designed as a 'Guided Learning Path'. A sticky top navigation allows users to jump to any section, while the overall vertical flow guides them logically through the project. The core 'Process' section uses an interactive accordion to prevent information overload. The main interactive feature is a custom-built Turing Machine simulator, which transforms the theoretical task into a practical, visual exercise. This structure enhances engagement and understanding by making the project steps and the core concept (the machine's operation) directly interactive. -->
-    <!-- Visualization & Content Choices: The WebQuest content is organized into thematic sections. Key interactions include: Accordion for the 'Process' section (Goal: Organize, Method: HTML/JS, Justification: Simplifies complex steps); Card layout for 'Resources' (Goal: Inform, Method: HTML/CSS, Justification: Clean presentation). The centerpiece is the interactive Turing Machine simulator (Goal: Engage/Demonstrate, Method: HTML/CSS/JS, Justification: Provides a hands-on tool to directly solve the WebQuest's main task of recognizing palindromes, making abstract concepts concrete). -->
-    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
-    <style>
-        body { font-family: 'Inter', sans-serif; }
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="icon" href="https://example.com/favicon.ico" type="image/x-icon">
+    <meta name="description" content="WebQuest sobre la Máquina de Turing, su funcionamiento y simulación interactiva. Aprende a diseñar y probar tu propia máquina para reconocer palíndromos binarios.">
+    <meta name="keywords" content="Máquina de Turing, WebQuest, Computación, Simulación, Palíndromos, Algoritmos, Educación">
+    <meta name="author" content="Leonardo Gutierrez y Jose Corobo">
+      <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f8f9fa; }
         .tape-cell {
-            min-width: 40px;
-            height: 40px;
-            border: 1px solid #d1d5db;
+            min-width: 45px;
+            height: 45px;
+            border: 1px solid #dee2e6;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 1.125rem;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #495057;
             transition: background-color 0.3s ease, transform 0.3s ease;
         }
         .tape-head {
-            border-bottom: 3px solid #3b82f6;
+            border-bottom: 4px solid #0d6efd;
             transform: scale(1.1);
+            background-color: #e7f5ff;
         }
-        .accordion-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.5s ease-in-out;
+        .anatomy-card {
+            background-color: white;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-        .accordion-button[aria-expanded="true"] + .accordion-content {
-            max-height: 1000px;
+        .anatomy-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -2px rgb(0 0 0 / 0.1);
         }
+        .rule-table td, .rule-table th { padding: 0.75rem; border: 1px solid #e9ecef; text-align: center; }
+        .rule-highlight { background-color: #ffc; }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-800">
+<body class="text-gray-800">
 
-    <header class="sticky top-0 bg-white/80 backdrop-blur-md z-20 shadow-sm">
-        <nav class="container mx-auto px-6 py-3">
-            <ul class="flex justify-center space-x-4 md:space-x-8 text-sm md:text-base">
-                <li><a href="#introduccion" class="text-gray-600 hover:text-blue-600 transition">Introducción</a></li>
-                <li><a href="#mision" class="text-gray-600 hover:text-blue-600 transition">La Misión</a></li>
-                <li><a href="#proceso" class="text-gray-600 hover:text-blue-600 transition">El Proceso</a></li>
-                <li><a href="#simulador" class="text-gray-600 hover:text-blue-600 transition font-bold text-blue-600">Simulador</a></li>
-                <li><a href="#recursos" class="text-gray-600 hover:text-blue-600 transition">Recursos</a></li>
+    <header class="sticky top-0 bg-white/90 backdrop-blur-lg z-20 shadow-md">
+        <nav class="container mx-auto px-6 py-4">
+            <ul class="flex justify-center space-x-5 md:space-x-10 text-base">
+                <li><a href="#introduccion" class="text-gray-700 hover:text-blue-600 font-semibold transition">Introducción</a></li>
+                <li><a href="#anatomia" class="text-gray-700 hover:text-blue-600 font-semibold transition">Anatomía</a></li>
+                <li><a href="#logica" class="text-gray-700 hover:text-blue-600 font-semibold transition">Lógica</a></li>
+                <li><a href="#simulador" class="text-gray-700 hover:text-blue-600 font-semibold transition">Simulador</a></li>
+                <li><a href="#recursos" class="text-gray-700 hover:text-blue-600 font-semibold transition">Recursos</a></li>
             </ul>
         </nav>
     </header>
 
-    <main class="container mx-auto px-6 py-8 md:py-12">
+    <main class="container mx-auto px-6 py-10 md:py-16">
         
-        <section id="introduccion" class="text-center mb-16 scroll-mt-20">
-            <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">WebQuest: El Corazón de la Computación</h1>
-            <p class="text-lg md:text-xl text-gray-600 max-w-4xl mx-auto">"Una máquina puede pensar si puede engañar a un humano haciéndole creer que es humana." - Alan Turing</p>
-            <div class="mt-8 text-left bg-white p-8 rounded-lg shadow-md max-w-4xl mx-auto">
-                <h2 class="text-2xl font-bold mb-4 text-gray-800">¡Hola! Bienvenidos a esta aventura computacional.</h2>
+        <section id="introduccion" class="text-center mb-20 scroll-mt-24">
+            <h1 class="text-4xl md:text-6xl font-bold text-gray-900 mb-4">Máquinas de Turing</h1>
+            <p class="text-lg md:text-xl text-gray-600 max-w-4xl mx-auto">Un viaje interactivo al corazón de la computación teórica.</p>
+            <div class="mt-10 text-left bg-white p-8 rounded-xl shadow-lg max-w-4xl mx-auto border border-gray-200">
+                <h2 class="text-2xl font-bold mb-4 text-gray-800 text-center">El Modelo que lo Cambió Todo</h2>
                 <p class="text-gray-700 leading-relaxed">
-                    En esta guía, se van a sumergir en el misterio de la Máquina de Turing. No solo van a aprender qué es, sino que la verán en acción, la diseñarán y la pondrán a prueba. Este modelo abstracto, una cinta infinita, un cabezal y unas reglas, es la base de toda la computación moderna. ¡Prepárense para pensar como una máquina y descubrir el verdadero corazón de la computación!
+                    Antes de que existiera el primer computador, Alan Turing imaginó un dispositivo de simplicidad radical: una <strong>Máquina de Turing</strong>. No era una máquina física, sino un modelo matemático que define qué significa "computar". Compuesta por una cinta infinita, un cabezal lector/escritor y un conjunto de reglas, esta idea sentó las bases para la era digital, demostrando que cualquier problema computable podría, en teoría, ser resuelto por esta máquina universal. Aquí exploraremos su funcionamiento y veremos su elegancia en acción.
                 </p>
             </div>
         </section>
 
-        <hr class="my-16 border-gray-200">
-
-        <section id="mision" class="mb-16 scroll-mt-20">
-            <h2 class="text-3xl font-bold text-center mb-8 text-gray-900">La Misión</h2>
-            <div class="text-left bg-white p-8 rounded-lg shadow-md max-w-4xl mx-auto">
-                 <p class="text-gray-700 leading-relaxed mb-6">El reto es doble. Primero, deben entender a fondo cómo funciona una Máquina de Turing. Segundo, usarán ese conocimiento para diseñar y simular una que resuelva un problema concreto. El resultado final será un informe digital que documente su trabajo.</p>
-                <div class="grid md:grid-cols-2 gap-6 text-center">
-                    <div class="bg-blue-50 p-6 rounded-lg border border-blue-200">
-                        <div class="text-3xl mb-2">🧠</div>
-                        <h3 class="text-xl font-semibold text-blue-900">1. Entender a Fondo</h3>
-                        <p class="text-blue-800 mt-2">Investigar y asimilar los componentes clave y la lógica de funcionamiento de la máquina.</p>
-                    </div>
-                    <div class="bg-green-50 p-6 rounded-lg border border-green-200">
-                        <div class="text-3xl mb-2">⚙️</div>
-                        <h3 class="text-xl font-semibold text-green-900">2. Diseñar y Simular</h3>
-                        <p class="text-green-800 mt-2">Crear una máquina para reconocer palíndromos binarios (ej. 101101) y simular su ejecución.</p>
-                    </div>
+        <section id="anatomia" class="mb-20 scroll-mt-24">
+            <h2 class="text-4xl font-bold text-center mb-12 text-gray-900">Anatomía de una Máquina</h2>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                <div class="anatomy-card">
+                    <div class="text-4xl mb-4">📜</div>
+                    <h3 class="text-xl font-bold mb-2">La Cinta</h3>
+                    <p class="text-gray-600">Es la memoria de la máquina. Una tira de papel teóricamente infinita, dividida en celdas. Cada celda contiene un símbolo o está en blanco.</p>
+                </div>
+                <div class="anatomy-card">
+                    <div class="text-4xl mb-4">👇</div>
+                    <h3 class="text-xl font-bold mb-2">El Cabezal</h3>
+                    <p class="text-gray-600">El único componente activo. Puede leer el símbolo en la celda actual, escribir un nuevo símbolo y moverse una celda a la izquierda o a la derecha.</p>
+                </div>
+                <div class="anatomy-card">
+                    <div class="text-4xl mb-4">🚦</div>
+                    <h3 class="text-xl font-bold mb-2">Los Estados</h3>
+                    <p class="text-gray-600">Son como los "modos" o la "memoria interna" de la máquina. En cualquier momento, la máquina está en un estado específico (ej. "buscando un 1", "retrocediendo").</p>
+                </div>
+                <div class="anatomy-card">
+                    <div class="text-4xl mb-4">🔤</div>
+                    <h3 class="text-xl font-bold mb-2">El Alfabeto</h3>
+                    <p class="text-gray-600">El conjunto finito de símbolos que la máquina entiende y puede escribir en la cinta. Incluye los símbolos de entrada y el símbolo en blanco.</p>
+                </div>
+                <div class="anatomy-card col-span-1 md:col-span-2 lg:col-span-2">
+                    <div class="text-4xl mb-4">🧠</div>
+                    <h3 class="text-xl font-bold mb-2">La Función de Transición</h3>
+                    <p class="text-gray-600">El "programa" o el cerebro de la máquina. Es un conjunto de reglas que le dicen qué hacer. Cada regla se basa en el estado actual y el símbolo que está leyendo, y define: a qué nuevo estado pasar, qué símbolo escribir y hacia dónde moverse.</p>
                 </div>
             </div>
         </section>
 
-        <hr class="my-16 border-gray-200">
-
-        <section id="proceso" class="mb-16 scroll-mt-20">
-            <h2 class="text-3xl font-bold text-center mb-8 text-gray-900">El Proceso: Paso a Paso</h2>
-             <div class="text-left bg-white p-8 rounded-lg shadow-md max-w-4xl mx-auto">
-                <p class="text-gray-700 leading-relaxed mb-6">Para cumplir la misión, sigan estos pasos de forma colaborativa. Hemos organizado el trabajo en fases para que puedan avanzar de forma estructurada. Pueden expandir cada paso para ver los detalles.</p>
-                <div class="space-y-4 accordion-container">
-                    <!-- Step 1 -->
-                    <div class="border border-gray-200 rounded-lg">
-                        <button class="accordion-button flex justify-between items-center w-full p-4 text-left font-semibold text-lg text-gray-800 hover:bg-gray-100" aria-expanded="false">
-                            Paso 1: Inmersión en los Fundamentos
-                            <span class="transform transition-transform duration-300">▼</span>
-                        </button>
-                        <div class="accordion-content">
-                            <div class="p-4 pt-0 text-gray-600">Consulten los recursos para entender los 5 elementos clave de una Máquina de Turing: Cinta, Cabezal, Alfabeto, Estados y la Función de Transición, que es el "programa" de la máquina.</div>
-                        </div>
-                    </div>
-                    <!-- Step 2 -->
-                    <div class="border border-gray-200 rounded-lg">
-                        <button class="accordion-button flex justify-between items-center w-full p-4 text-left font-semibold text-lg text-gray-800 hover:bg-gray-100" aria-expanded="false">
-                            Paso 2: Diseño de la Estrategia
-                            <span class="transform transition-transform duration-300">▼</span>
-                        </button>
-                        <div class="accordion-content">
-                            <div class="p-4 pt-0 text-gray-600">Compartan sus ideas. Una estrategia común para palíndromos es marcar el primer símbolo, ir al final, comparar con el último y repetir el proceso hacia adentro. Definan los estados que necesitarán (ej. `q0` (inicio), `q_buscar_final`, `q_comparar`, etc.).</div>
-                        </div>
-                    </div>
-                    <!-- Step 3 -->
-                    <div class="border border-gray-200 rounded-lg">
-                        <button class="accordion-button flex justify-between items-center w-full p-4 text-left font-semibold text-lg text-gray-800 hover:bg-gray-100" aria-expanded="false">
-                            Paso 3: Construcción de la Máquina
-                            <span class="transform transition-transform duration-300">▼</span>
-                        </button>
-                        <div class="accordion-content">
-                            <div class="p-4 pt-0 text-gray-600">Escriban la función de transición completa en una tabla. Esta tabla contendrá todas las reglas que su máquina seguirá para cada combinación de estado y símbolo leído.</div>
-                        </div>
-                    </div>
-                    <!-- Step 4 -->
-                    <div class="border border-gray-200 rounded-lg">
-                        <button class="accordion-button flex justify-between items-center w-full p-4 text-left font-semibold text-lg text-gray-800 hover:bg-gray-100" aria-expanded="false">
-                            Paso 4: Simulación y Depuración
-                             <span class="transform transition-transform duration-300">▼</span>
-                        </button>
-                        <div class="accordion-content">
-                            <div class="p-4 pt-0 text-gray-600">Usen el simulador de abajo o una hoja de papel para ejecutar su máquina paso a paso con un palíndromo (ej. `11011`) y un no-palíndromo (ej. `10110`). Comprueben que llega a los estados de aceptación y rechazo correctamente.</div>
-                        </div>
-                    </div>
-                    <!-- Step 5 -->
-                     <div class="border border-gray-200 rounded-lg">
-                        <button class="accordion-button flex justify-between items-center w-full p-4 text-left font-semibold text-lg text-gray-800 hover:bg-gray-100" aria-expanded="false">
-                            Paso 5: Creación del Informe
-                             <span class="transform transition-transform duration-300">▼</span>
-                        </button>
-                        <div class="accordion-content">
-                            <div class="p-4 pt-0 text-gray-600">Documenten todo el proceso en su informe. Sean claros y visuales. Usen diagramas para los estados y tablas para la simulación, explicando cómo funciona su máquina.</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <hr class="my-16 border-gray-200">
-
-        <section id="simulador" class="mb-16 scroll-mt-20">
-            <h2 class="text-3xl font-bold text-center mb-8 text-gray-900">Simulador Interactivo</h2>
-            <div class="bg-white p-6 md:p-8 rounded-lg shadow-md max-w-5xl mx-auto">
-                <p class="text-gray-700 leading-relaxed mb-6 text-center">
-                    Usen este simulador para probar su lógica de reconocimiento de palíndromos binarios. Introduzcan una cadena de 0s y 1s, y observen cómo la máquina la procesa paso a paso.
+        <section id="logica" class="mb-20 scroll-mt-24">
+            <h2 class="text-4xl font-bold text-center mb-12 text-gray-900">La Lógica en Acción</h2>
+            <div class="bg-white p-8 rounded-xl shadow-lg max-w-5xl mx-auto border border-gray-200">
+                <p class="text-gray-700 leading-relaxed mb-6">
+                    El "programa" de una Máquina de Turing es su tabla de reglas o función de transición. Para nuestro ejemplo de reconocer palíndromos (cadenas como `10101`), la máquina sigue una lógica específica. A continuación se muestra una parte de esa tabla. Cada fila es una instrucción:
                 </p>
-                <div class="flex flex-col sm:flex-row gap-4 mb-6">
-                    <input type="text" id="tape-input" placeholder="Ej: 101101" class="flex-grow p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                    <button id="load-tape-btn" class="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition">Cargar Cinta</button>
+                <p class="text-gray-700 leading-relaxed mb-6">
+                    Por ejemplo, la primera regla `(q0, 0) → (q1, x, R)` significa: "Si estás en el estado **q0** y lees un **0**, cámbialo por una **x**, muévete a la **Derecha** (R) y pasa al estado **q1**".
+                </p>
+                <div class="overflow-x-auto">
+                    <table id="rule-table" class="w-full text-sm rule-table">
+                        <thead class="bg-gray-100">
+                            <tr><th>Estado Actual</th><th>Símbolo Leído</th><th>Nuevo Estado</th><th>Símbolo a Escribir</th><th>Movimiento</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr data-rule="q0,0"><td>q0</td><td>0</td><td>q1</td><td>x</td><td>Derecha</td></tr>
+                            <tr data-rule="q0,1"><td>q0</td><td>1</td><td>q2</td><td>x</td><td>Derecha</td></tr>
+                            <tr data-rule="q1,0"><td>q1</td><td>0</td><td>q1</td><td>0</td><td>Derecha</td></tr>
+                            <tr data-rule="q1,1"><td>q1</td><td>1</td><td>q1</td><td>1</td><td>Derecha</td></tr>
+                            <tr data-rule="q1,_"><td>q1</td><td>_ (blanco)</td><td>q3</td><td>_</td><td>Izquierda</td></tr>
+                            <tr data-rule="q3,0"><td>q3</td><td>0</td><td>q5</td><td>y</td><td>Izquierda</td></tr>
+                            <tr data-rule="q5,x"><td>q5</td><td>x</td><td>q0</td><td>x</td><td>Derecha</td></tr>
+                            <tr data-rule="q_accept,_"><td>q_accept</td><td>-</td><td colspan="3">HALT: ACEPTADO</td></tr>
+                            <tr data-rule="q_reject,_"><td>q_reject</td><td>-</td><td colspan="3">HALT: RECHAZADO</td></tr>
+                        </tbody>
+                    </table>
                 </div>
-                
-                <div class="flex flex-col sm:flex-row gap-4 mb-6 items-center justify-center">
-                    <button id="run-btn" class="bg-green-600 text-white px-6 py-2 rounded-md hover:bg-green-700 transition disabled:bg-gray-400" disabled>Ejecutar</button>
-                    <button id="step-btn" class="bg-yellow-500 text-white px-6 py-2 rounded-md hover:bg-yellow-600 transition disabled:bg-gray-400" disabled>Paso</button>
-                    <button id="reset-btn" class="bg-red-600 text-white px-6 py-2 rounded-md hover:bg-red-700 transition disabled:bg-gray-400" disabled>Reiniciar</button>
-                    <div class="flex items-center space-x-2">
-                        <label for="speed-slider" class="text-sm">Velocidad:</label>
-                        <input type="range" id="speed-slider" min="50" max="1000" value="500" step="50" class="w-32">
-                    </div>
-                </div>
-                
-                <div id="simulator-display" class="w-full bg-gray-100 p-4 rounded-lg overflow-x-auto">
-                    <div id="tape-container" class="flex justify-center">
-                    </div>
-                </div>
-
-                <div id="status-display" class="mt-4 text-center font-mono p-4 rounded-lg bg-gray-800 text-white">
-                    Estado: <span id="current-state" class="font-bold text-yellow-300">N/A</span> | Pasos: <span id="step-count" class="font-bold text-green-300">0</span>
-                </div>
-                 <div id="final-result" class="mt-4 text-center text-2xl font-bold h-8"></div>
             </div>
         </section>
 
-        <hr class="my-16 border-gray-200">
-        
-        <section id="recursos" class="mb-16 scroll-mt-20">
-            <h2 class="text-3xl font-bold text-center mb-8 text-gray-900">Recursos de Apoyo</h2>
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
-                <a href="https://www.youtube.com/watch?v=7TKY-jksg3k" target="_blank" class="block bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow">
+        <section id="simulador" class="mb-20 scroll-mt-24">
+            <h2 class="text-4xl font-bold text-center mb-12 text-gray-900">Simulador Interactivo</h2>
+            <div class="bg-white p-6 md:p-8 rounded-xl shadow-lg max-w-6xl mx-auto border border-gray-200">
+                <div class="grid lg:grid-cols-3 gap-8">
+                    <div class="lg:col-span-2">
+                        <div class="flex flex-col sm:flex-row gap-4 mb-4">
+                            <input type="text" id="tape-input" placeholder="Introduce una cadena de 0s y 1s" class="flex-grow p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                            <button id="load-tape-btn" class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition font-semibold">Cargar Cinta</button>
+                        </div>
+                         <div class="flex flex-wrap gap-2 mb-6">
+                            <span class="text-sm font-semibold mr-2">Ejemplos:</span>
+                            <button class="preset-btn bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm hover:bg-gray-300" data-value="101101">Palíndromo</button>
+                            <button class="preset-btn bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm hover:bg-gray-300" data-value="1010">No Palíndromo</button>
+                            <button class="preset-btn bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm hover:bg-gray-300" data-value="00">Simple</button>
+                             <button class="preset-btn bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm hover:bg-gray-300" data-value="">Vacío</button>
+                        </div>
+                        <div id="simulator-display" class="w-full bg-gray-100 p-4 rounded-lg overflow-x-auto mb-4">
+                            <div id="tape-container" class="flex justify-center"></div>
+                        </div>
+                        <div id="final-result" class="text-center text-3xl font-bold h-10"></div>
+                    </div>
+                    <div class="lg:col-span-1">
+                        <h3 class="text-xl font-bold mb-4 text-center">Controles</h3>
+                        <div class="flex flex-col space-y-3">
+                             <button id="run-btn" class="w-full bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition disabled:bg-gray-400 font-semibold" disabled>▶ Ejecutar</button>
+                            <button id="step-btn" class="w-full bg-yellow-500 text-white px-6 py-3 rounded-lg hover:bg-yellow-600 transition disabled:bg-gray-400 font-semibold" disabled>⏯ Paso</button>
+                            <button id="reset-btn" class="w-full bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700 transition disabled:bg-gray-400 font-semibold" disabled>⏹ Reiniciar</button>
+                        </div>
+                        <div class="mt-4">
+                            <label for="speed-slider" class="block text-sm font-semibold text-center mb-2">Velocidad</label>
+                            <input type="range" id="speed-slider" min="50" max="1000" value="500" step="50" class="w-full">
+                        </div>
+                        <div id="status-display" class="mt-6 text-center font-mono p-4 rounded-lg bg-gray-800 text-white">
+                            <div>Estado: <span id="current-state" class="font-bold text-yellow-300">N/A</span></div>
+                            <div>Pasos: <span id="step-count" class="font-bold text-green-300">0</span></div>
+                        </div>
+                        <div id="rule-explanation" class="mt-4 p-4 rounded-lg bg-blue-50 border border-blue-200 h-32">
+                            <h4 class="font-bold text-blue-900 mb-2 text-center">Regla Actual</h4>
+                            <p class="text-sm text-blue-800 text-center">-</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="recursos" class="mb-20 scroll-mt-24">
+            <h2 class="text-4xl font-bold text-center mb-12 text-gray-900">Recursos Adicionales</h2>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                <a href="https://www.youtube.com/watch?v=7TKY-jksg3k" target="_blank" class="block anatomy-card text-center">
                     <h3 class="font-semibold text-lg text-blue-800">🎥 ¿Qué es una Máquina de Turing?</h3>
                     <p class="text-gray-600 mt-2">Una excelente introducción visual de 9 minutos a los conceptos fundamentales.</p>
                 </a>
-                <a href="https://es.wikipedia.org/wiki/M%C3%A1quina_de_Turing" target="_blank" class="block bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow">
+                <a href="https://es.wikipedia.org/wiki/M%C3%A1quina_de_Turing" target="_blank" class="block anatomy-card text-center">
                     <h3 class="font-semibold text-lg text-blue-800">📖 Artículo de Wikipedia</h3>
                     <p class="text-gray-600 mt-2">Para una visión general completa de los componentes, la historia y la teoría.</p>
                 </a>
-                <a href="https://turingmachinesimulator.com/" target="_blank" class="block bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow">
+                <a href="https://turingmachinesimulator.com/" target="_blank" class="block anatomy-card text-center">
                     <h3 class="font-semibold text-lg text-blue-800">🛠️ Simulador Avanzado</h3>
                     <p class="text-gray-600 mt-2">Un simulador online potente y fácil de usar para probar máquinas más complejas.</p>
                 </a>
             </div>
         </section>
 
-        <hr class="my-16 border-gray-200">
-
-        <footer class="text-center mb-16">
-            <h2 class="text-3xl font-bold text-center mb-8 text-gray-900">Conclusión y Entrega</h2>
-            <div class="bg-white p-8 rounded-lg shadow-md max-w-4xl mx-auto">
-                <p class="text-gray-700 leading-relaxed mb-6">Al finalizar esta guía, habrán interactuado directamente con uno de los conceptos más poderosos de la ciencia de la computación. Esperamos que esta experiencia les dé una nueva perspectiva sobre cómo "piensan" las computadoras. ¡Buen trabajo!</p>
-                <div class="mt-4">
-                    <label for="url-entrega" class="block font-semibold mb-2">URL de su informe final:</label>
-                    <input type="text" id="url-entrega" value="https://[plataforma-elegida].com/su-informe" class="w-full p-2 border border-gray-300 rounded-md bg-gray-100" readonly>
+        <section id="creadores" class="mb-20 scroll-mt-24">
+            <h2 class="text-4xl font-bold text-center mb-12 text-gray-900">Creadores</h2>
+            <div class="max-w-4xl mx-auto grid md:grid-cols-2 gap-12 text-center">
+                <div>
+                    <img src="https://placehold.co/150x150/e7f5ff/495057?text=LG" class="w-36 h-36 rounded-full mx-auto mb-4 border-4 border-white shadow-lg" alt="Foto de Leonardo Gutierrez">
+                    <h3 class="text-xl font-bold">Leonardo Gutierrez</h3>
+                </div>
+                <div>
+                    <img src="https://placehold.co/150x150/e7f5ff/495057?text=JC" class="w-36 h-36 rounded-full mx-auto mb-4 border-4 border-white shadow-lg" alt="Foto de Jose Corobo">
+                    <h3 class="text-xl font-bold">Jose Corobo</h3>
                 </div>
             </div>
+        </section>
+
+        <section id="informe" class="text-center mb-20 scroll-mt-24">
+             <div class="bg-white p-8 rounded-xl shadow-lg max-w-2xl mx-auto border border-gray-200">
+                <h2 class="text-3xl font-bold text-center mb-6 text-gray-900">Informe Detallado</h2>
+                <p class="text-gray-700 leading-relaxed mb-6">
+                    Para una exploración más profunda de la lógica, los estados y las pruebas realizadas, pueden consultar nuestro informe técnico completo.
+                </p>
+                <a href="#" class="inline-block bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition font-semibold text-lg">
+                    Ver Informe Completo
+                </a>
+            </div>
+        </section>
+
+        <footer class="text-center pt-10 border-t border-gray-200">
+            <p class="text-gray-600">Un explorador interactivo por Leonardo Gutierrez y Jose Corobo.</p>
         </footer>
 
     </main>
 
     <script>
     document.addEventListener('DOMContentLoaded', () => {
-        
-        const accordionContainer = document.querySelector('.accordion-container');
-        if(accordionContainer) {
-            accordionContainer.addEventListener('click', (e) => {
-                const button = e.target.closest('.accordion-button');
-                if (button) {
-                    const isExpanded = button.getAttribute('aria-expanded') === 'true';
-                    button.setAttribute('aria-expanded', !isExpanded);
-                    const icon = button.querySelector('span');
-                    icon.classList.toggle('rotate-180', !isExpanded);
-                }
-            });
-        }
-        
         const tapeInput = document.getElementById('tape-input');
         const loadTapeBtn = document.getElementById('load-tape-btn');
         const tapeContainer = document.getElementById('tape-container');
@@ -243,11 +242,13 @@
         const stepBtn = document.getElementById('step-btn');
         const resetBtn = document.getElementById('reset-btn');
         const speedSlider = document.getElementById('speed-slider');
+        const ruleExplanationP = document.querySelector('#rule-explanation p');
+        const ruleTable = document.getElementById('rule-table');
+        const presetBtns = document.querySelectorAll('.preset-btn');
 
         let machine = null;
         let initialTape = [];
         let simulationInterval = null;
-
         const BLANK = '_';
 
         const palindromeRules = {
@@ -255,7 +256,7 @@
                 '0': { write: 'x', move: 'R', nextState: 'q1' },
                 '1': { write: 'x', move: 'R', nextState: 'q2' },
                 [BLANK]: { write: BLANK, move: 'S', nextState: 'q_accept' },
-                'y': { write: 'y', move: 'S', nextState: 'q_accept' },
+                'y': { write: 'y', move: 'R', nextState: 'q6' },
             },
             q1: { 
                 '0': { write: '0', move: 'R', nextState: 'q1' },
@@ -271,16 +272,16 @@
             },
             q3: { 
                 '0': { write: 'y', move: 'L', nextState: 'q5' },
-                'x': { write: 'x', move: 'S', nextState: 'q_accept' },
-                 'y': { write: 'y', move: 'L', nextState: 'q3' },
-                [BLANK]: { write: BLANK, move: 'L', nextState: 'q_accept' },
+                'x': { write: 'x', move: 'S', nextState: 'q_reject' },
+                'y': { write: 'y', move: 'L', nextState: 'q3' },
+                [BLANK]: { write: BLANK, move: 'S', nextState: 'q_reject' },
                 '1': { write: '1', move: 'S', nextState: 'q_reject' },
             },
             q4: {
                 '1': { write: 'y', move: 'L', nextState: 'q5' },
-                'x': { write: 'x', move: 'S', nextState: 'q_accept' },
+                'x': { write: 'x', move: 'S', nextState: 'q_reject' },
                 'y': { write: 'y', move: 'L', nextState: 'q4' },
-                [BLANK]: { write: BLANK, move: 'L', nextState: 'q_accept' },
+                [BLANK]: { write: BLANK, move: 'S', nextState: 'q_reject' },
                 '0': { write: '0', move: 'S', nextState: 'q_reject' },
             },
             q5: {
@@ -288,6 +289,10 @@
                 '1': { write: '1', move: 'L', nextState: 'q5' },
                 'y': { write: 'y', move: 'L', nextState: 'q5' },
                 'x': { write: 'x', move: 'R', nextState: 'q0' },
+            },
+            q6: {
+                'y': { write: 'y', move: 'R', nextState: 'q6' },
+                [BLANK]: { write: BLANK, move: 'S', nextState: 'q_accept' },
             },
             q_accept: {},
             q_reject: {}
@@ -301,23 +306,30 @@
                 this.rules = rules;
                 this.steps = 0;
                 this.halted = false;
+                this.lastRule = null;
             }
 
             step() {
-                if (this.halted || !this.rules[this.state]) {
+                if (this.halted) return;
+                
+                const currentState = this.state;
+                if (!this.rules[currentState]) {
                     this.halted = true;
+                    this.lastRule = null;
                     return;
                 }
 
                 const currentSymbol = this.tape[this.head];
-                const rule = this.rules[this.state][currentSymbol];
+                const rule = this.rules[currentState][currentSymbol] || this.rules[currentState][BLANK];
 
                 if (!rule) {
                     this.state = 'q_reject';
                     this.halted = true;
+                    this.lastRule = null;
                     return;
                 }
                 
+                this.lastRule = { state: currentState, symbol: currentSymbol };
                 this.tape[this.head] = rule.write;
                 
                 if (rule.move === 'R') {
@@ -348,7 +360,7 @@
                 cell.className = 'tape-cell';
                 cell.textContent = symbol;
                 if (index === machine.head) {
-                    cell.classList.add('tape-head', 'bg-blue-200');
+                    cell.classList.add('tape-head');
                 }
                 tapeContainer.appendChild(cell);
             });
@@ -358,31 +370,48 @@
             if (!machine) return;
             currentStateSpan.textContent = machine.state;
             stepCountSpan.textContent = machine.steps;
+
+            // Highlight rule
+            document.querySelectorAll('#rule-table tr').forEach(row => row.classList.remove('rule-highlight'));
+            if (machine.lastRule) {
+                const ruleKey = `${machine.lastRule.state},${machine.lastRule.symbol}`;
+                const row = ruleTable.querySelector(`tr[data-rule="${ruleKey}"]`);
+                if(row) row.classList.add('rule-highlight');
+                
+                const rule = machine.rules[machine.lastRule.state][machine.lastRule.symbol];
+                if(rule) {
+                    ruleExplanationP.textContent = `En estado ${machine.lastRule.state}, leyendo '${machine.lastRule.symbol}', escribe '${rule.write}', mueve ${rule.move === 'R' ? 'Derecha' : 'Izquierda'} y cambia a ${rule.nextState}.`;
+                }
+            } else {
+                 ruleExplanationP.textContent = '-';
+            }
+
+
             if (machine.halted) {
                 clearInterval(simulationInterval);
                 runBtn.disabled = true;
                 stepBtn.disabled = true;
+                resetBtn.disabled = false;
                 if (machine.state === 'q_accept') {
-                    finalResultDiv.textContent = '✅ Aceptado';
-                    finalResultDiv.className = 'mt-4 text-center text-2xl font-bold text-green-600';
+                    finalResultDiv.textContent = '✅ Cadena Aceptada';
+                    finalResultDiv.className = 'text-center text-3xl font-bold h-10 text-green-600';
+                    ruleExplanationP.textContent = '¡Éxito! La máquina se detuvo en el estado de aceptación.';
                 } else {
-                    finalResultDiv.textContent = '❌ Rechazado';
-                    finalResultDiv.className = 'mt-4 text-center text-2xl font-bold text-red-600';
+                    finalResultDiv.textContent = '❌ Cadena Rechazada';
+                    finalResultDiv.className = 'text-center text-3xl font-bold h-10 text-red-600';
+                    ruleExplanationP.textContent = 'Fallo. La máquina se detuvo en el estado de rechazo o no encontró una regla válida.';
                 }
             }
         }
 
-        function loadTape() {
-            const input = tapeInput.value.trim();
+        function loadTape(value) {
+            const input = value.trim();
             if (!/^[01]*$/.test(input)) {
                 alert('Por favor, introduce solo 0s y 1s.');
                 return;
             }
             initialTape = input.split('');
             resetMachine();
-            runBtn.disabled = false;
-            stepBtn.disabled = false;
-            resetBtn.disabled = false;
         }
 
         function resetMachine() {
@@ -391,8 +420,9 @@
             renderTape();
             updateStatus();
             finalResultDiv.textContent = '';
-            runBtn.disabled = initialTape.length === 0;
-            stepBtn.disabled = initialTape.length === 0;
+            const hasTape = initialTape.length > 0 || machine.tape.length > 2;
+            runBtn.disabled = !hasTape;
+            stepBtn.disabled = !hasTape;
             resetBtn.disabled = false;
         }
 
@@ -422,10 +452,21 @@
             }
         }
         
-        loadTapeBtn.addEventListener('click', loadTape);
+        loadTapeBtn.addEventListener('click', () => loadTape(tapeInput.value));
+        presetBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const value = btn.getAttribute('data-value');
+                tapeInput.value = value;
+                loadTape(value);
+            })
+        });
+
         runBtn.addEventListener('click', runSimulation);
         stepBtn.addEventListener('click', stepSimulation);
         resetBtn.addEventListener('click', resetMachine);
+
+        // Initial state
+        loadTape('101');
 
     });
     </script>
