@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebQuest: El Corazón de la Computación</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals with Blue Accent -->
+    <!-- Application Structure Plan: The SPA is designed as a 'Guided Learning Path'. A sticky top navigation allows users to jump to any section, while the overall vertical flow guides them logically through the project. The core 'Process' section uses an interactive accordion to prevent information overload. The main interactive feature is a custom-built Turing Machine simulator, which transforms the theoretical task into a practical, visual exercise. This structure enhances engagement and understanding by making the project steps and the core concept (the machine's operation) directly interactive. -->
+    <!-- Visualization & Content Choices: The WebQuest content is organized into thematic sections. Key interactions include: Accordion for the 'Process' section (Goal: Organize, Method: HTML/JS, Justification: Simplifies complex steps); Card layout for 'Resources' (Goal: Inform, Method: HTML/CSS, Justification: Clean presentation). The centerpiece is the interactive Turing Machine simulator (Goal: Engage/Demonstrate, Method: HTML/CSS/JS, Justification: Provides a hands-on tool to directly solve the WebQuest's main task of recognizing palindromes, making abstract concepts concrete). -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .tape-cell {
+            min-width: 40px;
+            height: 40px;
+            border: 1px solid #d1d5db;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.125rem;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+        .tape-head {
+            border-bottom: 3px solid #3b82f6;
+            transform: scale(1.1);
+        }
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out;
+        }
+        .accordion-button[aria-expanded="true"] + .accordion-content {
+            max-height: 1000px;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <header class="sticky top-0 bg-white/80 backdrop-blur-md z-20 shadow-sm">
+        <nav class="container mx-auto px-6 py-3">
+            <ul class="flex justify-center space-x-4 md:space-x-8 text-sm md:text-base">
+                <li><a href="#introduccion" class="text-gray-600 hover:text-blue-600 transition">Introducción</a></li>
+                <li><a href="#mision" class="text-gray-600 hover:text-blue-600 transition">La Misión</a></li>
+                <li><a href="#proceso" class="text-gray-600 hover:text-blue-600 transition">El Proceso</a></li>
+                <li><a href="#simulador" class="text-gray-600 hover:text-blue-600 transition font-bold text-blue-600">Simulador</a></li>
+                <li><a href="#recursos" class="text-gray-600 hover:text-blue-600 transition">Recursos</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-6 py-8 md:py-12">
+        
+        <section id="introduccion" class="text-center mb-16 scroll-mt-20">
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">WebQuest: El Corazón de la Computación</h1>
+            <p class="text-lg md:text-xl text-gray-600 max-w-4xl mx-auto">"Una máquina puede pensar si puede engañar a un humano haciéndole creer que es humana." - Alan Turing</p>
+            <div class="mt-8 text-left bg-white p-8 rounded-lg shadow-md max-w-4xl mx-auto">
+                <h2 class="text-2xl font-bold mb-4 text-gray-800">¡Hola! Bienvenidos a esta aventura computacional.</h2>
+                <p class="text-gray-700 leading-relaxed">
+                    En esta guía, se van a sumergir en el misterio de la Máquina de Turing. No solo van a aprender qué es, sino que la verán en acción, la diseñarán y la pondrán a prueba. Este modelo abstracto, una cinta infinita, un cabezal y unas reglas, es la base de toda la computación moderna. ¡Prepárense para pensar como una máquina y descubrir el verdadero corazón de la computación!
+                </p>
+            </div>
+        </section>
+
+        <hr class="my-16 border-gray-200">
+
+        <section id="mision" class="mb-16 scroll-mt-20">
+            <h2 class="text-3xl font-bold text-center mb-8 text-gray-900">La Misión</h2>
+            <div class="text-left bg-white p-8 rounded-lg shadow-md max-w-4xl mx-auto">
+                 <p class="text-gray-700 leading-relaxed mb-6">El reto es doble. Primero, deben entender a fondo cómo funciona una Máquina de Turing. Segundo, usarán ese conocimiento para diseñar y simular una que resuelva un problema concreto. El resultado final será un informe digital que documente su trabajo.</p>
+                <div class="grid md:grid-cols-2 gap-6 text-center">
+                    <div class="bg-blue-50 p-6 rounded-lg border border-blue-200">
+                        <div class="text-3xl mb-2">🧠</div>
+                        <h3 class="text-xl font-semibold text-blue-900">1. Entender a Fondo</h3>
+                        <p class="text-blue-800 mt-2">Investigar y asimilar los componentes clave y la lógica de funcionamiento de la máquina.</p>
+                    </div>
+                    <div class="bg-green-50 p-6 rounded-lg border border-green-200">
+                        <div class="text-3xl mb-2">⚙️</div>
+                        <h3 class="text-xl font-semibold text-green-900">2. Diseñar y Simular</h3>
+                        <p class="text-green-800 mt-2">Crear una máquina para reconocer palíndromos binarios (ej. 101101) y simular su ejecución.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <hr class="my-16 border-gray-200">
+
+        <section id="proceso" class="mb-16 scroll-mt-20">
+            <h2 class="text-3xl font-bold text-center mb-8 text-gray-900">El Proceso: Paso a Paso</h2>
+             <div class="text-left bg-white p-8 rounded-lg shadow-md max-w-4xl mx-auto">
+                <p class="text-gray-700 leading-relaxed mb-6">Para cumplir la misión, sigan estos pasos de forma colaborativa. Hemos organizado el trabajo en fases para que puedan avanzar de forma estructurada. Pueden expandir cada paso para ver los detalles.</p>
+                <div class="space-y-4 accordion-container">
+                    <!-- Step 1 -->
+                    <div class="border border-gray-200 rounded-lg">
+                        <button class="accordion-button flex justify-between items-center w-full p-4 text-left font-semibold text-lg text-gray-800 hover:bg-gray-100" aria-expanded="false">
+                            Paso 1: Inmersión en los Fundamentos
+                            <span class="transform transition-transform duration-300">▼</span>
+                        </button>
+                        <div class="accordion-content">
+                            <div class="p-4 pt-0 text-gray-600">Consulten los recursos para entender los 5 elementos clave de una Máquina de Turing: Cinta, Cabezal, Alfabeto, Estados y la Función de Transición, que es el "programa" de la máquina.</div>
+                        </div>
+                    </div>
+                    <!-- Step 2 -->
+                    <div class="border border-gray-200 rounded-lg">
+                        <button class="accordion-button flex justify-between items-center w-full p-4 text-left font-semibold text-lg text-gray-800 hover:bg-gray-100" aria-expanded="false">
+                            Paso 2: Diseño de la Estrategia
+                            <span class="transform transition-transform duration-300">▼</span>
+                        </button>
+                        <div class="accordion-content">
+                            <div class="p-4 pt-0 text-gray-600">Compartan sus ideas. Una estrategia común para palíndromos es marcar el primer símbolo, ir al final, comparar con el último y repetir el proceso hacia adentro. Definan los estados que necesitarán (ej. `q0` (inicio), `q_buscar_final`, `q_comparar`, etc.).</div>
+                        </div>
+                    </div>
+                    <!-- Step 3 -->
+                    <div class="border border-gray-200 rounded-lg">
+                        <button class="accordion-button flex justify-between items-center w-full p-4 text-left font-semibold text-lg text-gray-800 hover:bg-gray-100" aria-expanded="false">
+                            Paso 3: Construcción de la Máquina
+                            <span class="transform transition-transform duration-300">▼</span>
+                        </button>
+                        <div class="accordion-content">
+                            <div class="p-4 pt-0 text-gray-600">Escriban la función de transición completa en una tabla. Esta tabla contendrá todas las reglas que su máquina seguirá para cada combinación de estado y símbolo leído.</div>
+                        </div>
+                    </div>
+                    <!-- Step 4 -->
+                    <div class="border border-gray-200 rounded-lg">
+                        <button class="accordion-button flex justify-between items-center w-full p-4 text-left font-semibold text-lg text-gray-800 hover:bg-gray-100" aria-expanded="false">
+                            Paso 4: Simulación y Depuración
+                             <span class="transform transition-transform duration-300">▼</span>
+                        </button>
+                        <div class="accordion-content">
+                            <div class="p-4 pt-0 text-gray-600">Usen el simulador de abajo o una hoja de papel para ejecutar su máquina paso a paso con un palíndromo (ej. `11011`) y un no-palíndromo (ej. `10110`). Comprueben que llega a los estados de aceptación y rechazo correctamente.</div>
+                        </div>
+                    </div>
+                    <!-- Step 5 -->
+                     <div class="border border-gray-200 rounded-lg">
+                        <button class="accordion-button flex justify-between items-center w-full p-4 text-left font-semibold text-lg text-gray-800 hover:bg-gray-100" aria-expanded="false">
+                            Paso 5: Creación del Informe
+                             <span class="transform transition-transform duration-300">▼</span>
+                        </button>
+                        <div class="accordion-content">
+                            <div class="p-4 pt-0 text-gray-600">Documenten todo el proceso en su informe. Sean claros y visuales. Usen diagramas para los estados y tablas para la simulación, explicando cómo funciona su máquina.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <hr class="my-16 border-gray-200">
+
+        <section id="simulador" class="mb-16 scroll-mt-20">
+            <h2 class="text-3xl font-bold text-center mb-8 text-gray-900">Simulador Interactivo</h2>
+            <div class="bg-white p-6 md:p-8 rounded-lg shadow-md max-w-5xl mx-auto">
+                <p class="text-gray-700 leading-relaxed mb-6 text-center">
+                    Usen este simulador para probar su lógica de reconocimiento de palíndromos binarios. Introduzcan una cadena de 0s y 1s, y observen cómo la máquina la procesa paso a paso.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 mb-6">
+                    <input type="text" id="tape-input" placeholder="Ej: 101101" class="flex-grow p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                    <button id="load-tape-btn" class="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition">Cargar Cinta</button>
+                </div>
+                
+                <div class="flex flex-col sm:flex-row gap-4 mb-6 items-center justify-center">
+                    <button id="run-btn" class="bg-green-600 text-white px-6 py-2 rounded-md hover:bg-green-700 transition disabled:bg-gray-400" disabled>Ejecutar</button>
+                    <button id="step-btn" class="bg-yellow-500 text-white px-6 py-2 rounded-md hover:bg-yellow-600 transition disabled:bg-gray-400" disabled>Paso</button>
+                    <button id="reset-btn" class="bg-red-600 text-white px-6 py-2 rounded-md hover:bg-red-700 transition disabled:bg-gray-400" disabled>Reiniciar</button>
+                    <div class="flex items-center space-x-2">
+                        <label for="speed-slider" class="text-sm">Velocidad:</label>
+                        <input type="range" id="speed-slider" min="50" max="1000" value="500" step="50" class="w-32">
+                    </div>
+                </div>
+                
+                <div id="simulator-display" class="w-full bg-gray-100 p-4 rounded-lg overflow-x-auto">
+                    <div id="tape-container" class="flex justify-center">
+                    </div>
+                </div>
+
+                <div id="status-display" class="mt-4 text-center font-mono p-4 rounded-lg bg-gray-800 text-white">
+                    Estado: <span id="current-state" class="font-bold text-yellow-300">N/A</span> | Pasos: <span id="step-count" class="font-bold text-green-300">0</span>
+                </div>
+                 <div id="final-result" class="mt-4 text-center text-2xl font-bold h-8"></div>
+            </div>
+        </section>
+
+        <hr class="my-16 border-gray-200">
+        
+        <section id="recursos" class="mb-16 scroll-mt-20">
+            <h2 class="text-3xl font-bold text-center mb-8 text-gray-900">Recursos de Apoyo</h2>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
+                <a href="https://www.youtube.com/watch?v=7TKY-jksg3k" target="_blank" class="block bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow">
+                    <h3 class="font-semibold text-lg text-blue-800">🎥 ¿Qué es una Máquina de Turing?</h3>
+                    <p class="text-gray-600 mt-2">Una excelente introducción visual de 9 minutos a los conceptos fundamentales.</p>
+                </a>
+                <a href="https://es.wikipedia.org/wiki/M%C3%A1quina_de_Turing" target="_blank" class="block bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow">
+                    <h3 class="font-semibold text-lg text-blue-800">📖 Artículo de Wikipedia</h3>
+                    <p class="text-gray-600 mt-2">Para una visión general completa de los componentes, la historia y la teoría.</p>
+                </a>
+                <a href="https://turingmachinesimulator.com/" target="_blank" class="block bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow">
+                    <h3 class="font-semibold text-lg text-blue-800">🛠️ Simulador Avanzado</h3>
+                    <p class="text-gray-600 mt-2">Un simulador online potente y fácil de usar para probar máquinas más complejas.</p>
+                </a>
+            </div>
+        </section>
+
+        <hr class="my-16 border-gray-200">
+
+        <footer class="text-center mb-16">
+            <h2 class="text-3xl font-bold text-center mb-8 text-gray-900">Conclusión y Entrega</h2>
+            <div class="bg-white p-8 rounded-lg shadow-md max-w-4xl mx-auto">
+                <p class="text-gray-700 leading-relaxed mb-6">Al finalizar esta guía, habrán interactuado directamente con uno de los conceptos más poderosos de la ciencia de la computación. Esperamos que esta experiencia les dé una nueva perspectiva sobre cómo "piensan" las computadoras. ¡Buen trabajo!</p>
+                <div class="mt-4">
+                    <label for="url-entrega" class="block font-semibold mb-2">URL de su informe final:</label>
+                    <input type="text" id="url-entrega" value="https://[plataforma-elegida].com/su-informe" class="w-full p-2 border border-gray-300 rounded-md bg-gray-100" readonly>
+                </div>
+            </div>
+        </footer>
+
+    </main>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        
+        const accordionContainer = document.querySelector('.accordion-container');
+        if(accordionContainer) {
+            accordionContainer.addEventListener('click', (e) => {
+                const button = e.target.closest('.accordion-button');
+                if (button) {
+                    const isExpanded = button.getAttribute('aria-expanded') === 'true';
+                    button.setAttribute('aria-expanded', !isExpanded);
+                    const icon = button.querySelector('span');
+                    icon.classList.toggle('rotate-180', !isExpanded);
+                }
+            });
+        }
+        
+        const tapeInput = document.getElementById('tape-input');
+        const loadTapeBtn = document.getElementById('load-tape-btn');
+        const tapeContainer = document.getElementById('tape-container');
+        const currentStateSpan = document.getElementById('current-state');
+        const stepCountSpan = document.getElementById('step-count');
+        const finalResultDiv = document.getElementById('final-result');
+        const runBtn = document.getElementById('run-btn');
+        const stepBtn = document.getElementById('step-btn');
+        const resetBtn = document.getElementById('reset-btn');
+        const speedSlider = document.getElementById('speed-slider');
+
+        let machine = null;
+        let initialTape = [];
+        let simulationInterval = null;
+
+        const BLANK = '_';
+
+        const palindromeRules = {
+            q0: {
+                '0': { write: 'x', move: 'R', nextState: 'q1' },
+                '1': { write: 'x', move: 'R', nextState: 'q2' },
+                [BLANK]: { write: BLANK, move: 'S', nextState: 'q_accept' },
+                'y': { write: 'y', move: 'S', nextState: 'q_accept' },
+            },
+            q1: { 
+                '0': { write: '0', move: 'R', nextState: 'q1' },
+                '1': { write: '1', move: 'R', nextState: 'q1' },
+                'y': { write: 'y', move: 'R', nextState: 'q1' },
+                [BLANK]: { write: BLANK, move: 'L', nextState: 'q3' },
+            },
+            q2: {
+                '0': { write: '0', move: 'R', nextState: 'q2' },
+                '1': { write: '1', move: 'R', nextState: 'q2' },
+                'y': { write: 'y', move: 'R', nextState: 'q2' },
+                [BLANK]: { write: BLANK, move: 'L', nextState: 'q4' },
+            },
+            q3: { 
+                '0': { write: 'y', move: 'L', nextState: 'q5' },
+                'x': { write: 'x', move: 'S', nextState: 'q_accept' },
+                 'y': { write: 'y', move: 'L', nextState: 'q3' },
+                [BLANK]: { write: BLANK, move: 'L', nextState: 'q_accept' },
+                '1': { write: '1', move: 'S', nextState: 'q_reject' },
+            },
+            q4: {
+                '1': { write: 'y', move: 'L', nextState: 'q5' },
+                'x': { write: 'x', move: 'S', nextState: 'q_accept' },
+                'y': { write: 'y', move: 'L', nextState: 'q4' },
+                [BLANK]: { write: BLANK, move: 'L', nextState: 'q_accept' },
+                '0': { write: '0', move: 'S', nextState: 'q_reject' },
+            },
+            q5: {
+                '0': { write: '0', move: 'L', nextState: 'q5' },
+                '1': { write: '1', move: 'L', nextState: 'q5' },
+                'y': { write: 'y', move: 'L', nextState: 'q5' },
+                'x': { write: 'x', move: 'R', nextState: 'q0' },
+            },
+            q_accept: {},
+            q_reject: {}
+        };
+
+        class TuringMachine {
+            constructor(tape, rules) {
+                this.tape = [BLANK, ...tape, BLANK];
+                this.head = 1;
+                this.state = 'q0';
+                this.rules = rules;
+                this.steps = 0;
+                this.halted = false;
+            }
+
+            step() {
+                if (this.halted || !this.rules[this.state]) {
+                    this.halted = true;
+                    return;
+                }
+
+                const currentSymbol = this.tape[this.head];
+                const rule = this.rules[this.state][currentSymbol];
+
+                if (!rule) {
+                    this.state = 'q_reject';
+                    this.halted = true;
+                    return;
+                }
+                
+                this.tape[this.head] = rule.write;
+                
+                if (rule.move === 'R') {
+                    this.head++;
+                    if (this.head === this.tape.length) this.tape.push(BLANK);
+                } else if (rule.move === 'L') {
+                    this.head--;
+                    if (this.head < 0) {
+                       this.tape.unshift(BLANK);
+                       this.head = 0;
+                    }
+                }
+                
+                this.state = rule.nextState;
+                this.steps++;
+
+                if (this.state === 'q_accept' || this.state === 'q_reject') {
+                    this.halted = true;
+                }
+            }
+        }
+
+        function renderTape() {
+            if (!machine) return;
+            tapeContainer.innerHTML = '';
+            machine.tape.forEach((symbol, index) => {
+                const cell = document.createElement('div');
+                cell.className = 'tape-cell';
+                cell.textContent = symbol;
+                if (index === machine.head) {
+                    cell.classList.add('tape-head', 'bg-blue-200');
+                }
+                tapeContainer.appendChild(cell);
+            });
+        }
+        
+        function updateStatus() {
+            if (!machine) return;
+            currentStateSpan.textContent = machine.state;
+            stepCountSpan.textContent = machine.steps;
+            if (machine.halted) {
+                clearInterval(simulationInterval);
+                runBtn.disabled = true;
+                stepBtn.disabled = true;
+                if (machine.state === 'q_accept') {
+                    finalResultDiv.textContent = '✅ Aceptado';
+                    finalResultDiv.className = 'mt-4 text-center text-2xl font-bold text-green-600';
+                } else {
+                    finalResultDiv.textContent = '❌ Rechazado';
+                    finalResultDiv.className = 'mt-4 text-center text-2xl font-bold text-red-600';
+                }
+            }
+        }
+
+        function loadTape() {
+            const input = tapeInput.value.trim();
+            if (!/^[01]*$/.test(input)) {
+                alert('Por favor, introduce solo 0s y 1s.');
+                return;
+            }
+            initialTape = input.split('');
+            resetMachine();
+            runBtn.disabled = false;
+            stepBtn.disabled = false;
+            resetBtn.disabled = false;
+        }
+
+        function resetMachine() {
+            clearInterval(simulationInterval);
+            machine = new TuringMachine([...initialTape], palindromeRules);
+            renderTape();
+            updateStatus();
+            finalResultDiv.textContent = '';
+            runBtn.disabled = initialTape.length === 0;
+            stepBtn.disabled = initialTape.length === 0;
+            resetBtn.disabled = false;
+        }
+
+        function runSimulation() {
+            if (machine.halted) return;
+            runBtn.disabled = true;
+            stepBtn.disabled = true;
+            resetBtn.disabled = true;
+            const delay = 1050 - speedSlider.value;
+            simulationInterval = setInterval(() => {
+                if (!machine.halted) {
+                    machine.step();
+                    renderTape();
+                    updateStatus();
+                } else {
+                    clearInterval(simulationInterval);
+                    resetBtn.disabled = false;
+                }
+            }, delay);
+        }
+
+        function stepSimulation() {
+            if (!machine.halted) {
+                machine.step();
+                renderTape();
+                updateStatus();
+            }
+        }
+        
+        loadTapeBtn.addEventListener('click', loadTape);
+        runBtn.addEventListener('click', runSimulation);
+        stepBtn.addEventListener('click', stepSimulation);
+        resetBtn.addEventListener('click', resetMachine);
+
+    });
+    </script>
+</body>
+</html>
