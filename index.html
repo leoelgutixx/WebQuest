@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WebQuest: El Corazón de la Computación</title>
+    <title>Explorador Interactivo: Máquinas de Turing</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="icon" href="https://example.com/favicon.ico" type="image/x-icon">
-    <meta name="description" content="WebQuest sobre la Máquina de Turing, su funcionamiento y simulación interactiva. Aprende a diseñar y probar tu propia máquina para reconocer palíndromos binarios.">
-    <meta name="keywords" content="Máquina de Turing, WebQuest, Computación, Simulación, Palíndromos, Algoritmos, Educación">
+    <meta name="description" content="Explorador interactivo de la Máquina de Turing, su funcionamiento, simulación y la emergencia de la computación en otros sistemas (Turing-completitud).">
+    <meta name="keywords" content="Máquina de Turing, Turing Completo, Juego de la Vida, Regla 110, Computación, Simulación, Algoritmos, Educación">
     <meta name="author" content="Leonardo Gutierrez y Jose Corobo">
     <meta name="theme-color" content="#4A90E2">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
@@ -34,30 +34,32 @@
             transform: scale(1.1);
             background-color: #e7f5ff;
         }
-        .anatomy-card {
+        .interactive-card {
             background-color: white;
             border-radius: 0.75rem;
             padding: 1.5rem;
             box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-        .anatomy-card:hover {
+        .interactive-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -2px rgb(0 0 0 / 0.1);
         }
         .rule-table td, .rule-table th { padding: 0.75rem; border: 1px solid #e9ecef; text-align: center; }
         .rule-highlight { background-color: #ffc; }
-    </style>
+        #game-of-life-canvas, #rule-110-canvas { background-color: #e9ecef; border-radius: 0.5rem; }
+      </style>
 </head>
 <body class="text-gray-800">
 
     <header class="sticky top-0 bg-white/90 backdrop-blur-lg z-20 shadow-md">
         <nav class="container mx-auto px-6 py-4">
-            <ul class="flex justify-center flex-wrap space-x-5 md:space-x-8 text-base">
+            <ul class="flex justify-center flex-wrap gap-x-5 md:gap-x-8 text-base">
                 <li><a href="#introduccion" class="text-gray-700 hover:text-blue-600 font-semibold transition">Introducción</a></li>
                 <li><a href="#anatomia" class="text-gray-700 hover:text-blue-600 font-semibold transition">Anatomía</a></li>
                 <li><a href="#logica" class="text-gray-700 hover:text-blue-600 font-semibold transition">Lógica</a></li>
                 <li><a href="#simulador" class="text-gray-700 hover:text-blue-600 font-semibold transition">Simulador</a></li>
+                <li><a href="#ecos" class="text-gray-700 hover:text-blue-600 font-semibold transition">La Huella de Turing</a></li>
                 <li><a href="#aprendizaje" class="text-gray-700 hover:text-blue-600 font-semibold transition">Aplicaciones</a></li>
                 <li><a href="#recursos" class="text-gray-700 hover:text-blue-600 font-semibold transition">Recursos</a></li>
             </ul>
@@ -67,8 +69,8 @@
     <main class="container mx-auto px-6 py-10 md:py-16">
         
         <section id="introduccion" class="text-center mb-20 scroll-mt-24">
-            <h1 class="text-4xl md:text-6xl font-bold text-gray-900 mb-4">Máquinas de Turing</h1>
-            <p class="text-lg md:text-xl text-gray-600 max-w-4xl mx-auto">Un viaje al corazón de la computación teórica.</p>
+            <h1 class="text-4xl md:text-6xl font-bold text-gray-900 mb-4 animate__animated animate__fadeInDown">Máquinas de Turing</h1>
+            <p class="text-lg md:text-xl text-gray-600 max-w-4xl mx-auto animate__animated animate__fadeInUp">Un viaje al corazón de la computación teórica.</p>
             <div class="mt-10 text-left bg-white p-8 rounded-xl shadow-lg max-w-4xl mx-auto border border-gray-200">
                 <h2 class="text-2xl font-bold mb-4 text-gray-800 text-center">El Modelo que lo cambió todo</h2>
                 <p class="text-gray-700 leading-relaxed">
@@ -80,27 +82,27 @@
         <section id="anatomia" class="mb-20 scroll-mt-24">
             <h2 class="text-4xl font-bold text-center mb-12 text-gray-900">Anatomía de una Máquina</h2>
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-                <div class="anatomy-card">
+                <div class="interactive-card">
                     <div class="text-4xl mb-4">📜</div>
                     <h3 class="text-xl font-bold mb-2">La Cinta</h3>
                     <p class="text-gray-600">Es la memoria de la máquina. Una tira de papel teóricamente infinita, dividida en celdas. Cada celda contiene un símbolo o está en blanco.</p>
                 </div>
-                <div class="anatomy-card">
+                <div class="interactive-card">
                     <div class="text-4xl mb-4">👇</div>
                     <h3 class="text-xl font-bold mb-2">El Cabezal</h3>
                     <p class="text-gray-600">El único componente activo. Puede leer el símbolo en la celda actual, escribir un nuevo símbolo y moverse una celda a la izquierda o a la derecha.</p>
                 </div>
-                <div class="anatomy-card">
+                <div class="interactive-card">
                     <div class="text-4xl mb-4">🚦</div>
                     <h3 class="text-xl font-bold mb-2">Los Estados</h3>
                     <p class="text-gray-600">Son como los "modos" o la "memoria interna" de la máquina. En cualquier momento, la máquina está en un estado específico (ej. "buscando un 1", "retrocediendo").</p>
                 </div>
-                <div class="anatomy-card">
+                <div class="interactive-card">
                     <div class="text-4xl mb-4">🔤</div>
                     <h3 class="text-xl font-bold mb-2">El Alfabeto</h3>
                     <p class="text-gray-600">El conjunto finito de símbolos que la máquina entiende y puede escribir en la cinta. Incluye los símbolos de entrada y el símbolo en blanco.</p>
                 </div>
-                <div class="anatomy-card col-span-1 md:col-span-2 lg:col-span-2">
+                <div class="interactive-card col-span-1 md:col-span-2 lg:col-span-2">
                     <div class="text-4xl mb-4">🧠</div>
                     <h3 class="text-xl font-bold mb-2">La Función de Transición</h3>
                     <p class="text-gray-600">El "programa" o el cerebro de la máquina. Es un conjunto de reglas que le dicen qué hacer. Cada regla se basa en el estado actual y el símbolo que está leyendo, y define: a qué nuevo estado pasar, qué símbolo escribir y hacia dónde moverse.</p>
@@ -183,10 +185,33 @@
             </div>
         </section>
 
+        <section id="ecos" class="mb-20 scroll-mt-24">
+            <h2 class="text-4xl font-bold text-center mb-4 text-gray-900">La Huella de Turing</h2>
+            <p class="text-lg text-gray-600 text-center mb-12 max-w-3xl mx-auto">La computación es un fenómeno universal. Sistemas con reglas simples, que no parecen computadoras, pueden ser tan poderosos como una Máquina de Turing. Esto se conoce como <strong>Turing-completitud</strong>.</p>
+            <div class="grid lg:grid-cols-2 gap-10 max-w-6xl mx-auto">
+                <div class="interactive-card">
+                    <h3 class="text-2xl font-bold mb-4 text-center">Juego de la Vida de Conway</h3>
+                    <canvas id="game-of-life-canvas" class="w-full cursor-pointer" width="400" height="400"></canvas>
+                    <p class="text-gray-600 mt-4 text-sm">Un "universo" 2D donde células viven o mueren según 4 reglas simples basadas en sus vecinos. A pesar de su simplicidad, se pueden construir patrones que actúan como compuertas lógicas, y por tanto, computadoras. Lo que ves es un "Cañón de Planeadores", una fábrica infinita de naves espaciales.</p>
+                     <div class="text-center mt-4">
+                        <button id="gol-reset-btn" class="bg-blue-100 text-blue-800 px-4 py-2 rounded-lg hover:bg-blue-200 border border-blue-300 font-semibold text-sm">Reiniciar Cañón</button>
+                    </div>
+                </div>
+                <div class="interactive-card">
+                    <h3 class="text-2xl font-bold mb-4 text-center">Autómata Celular: Regla 110</h3>
+                    <canvas id="rule-110-canvas" class="w-full" width="400" height="400"></canvas>
+                    <p class="text-gray-600 mt-4 text-sm">Uno de los sistemas más simples que se conocen con Turing-completitud. Es un universo 1D donde el color de cada celda en la siguiente generación depende solo de su color y el de sus dos vecinos. Las estructuras triangulares y las interacciones entre ellas pueden simular cualquier cómputo.</p>
+                    <div class="text-center mt-4">
+                        <button id="rule110-step-btn" class="bg-blue-100 text-blue-800 px-4 py-2 rounded-lg hover:bg-blue-200 border border-blue-300 font-semibold text-sm">Siguiente Generación</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <section id="aprendizaje" class="mb-20 scroll-mt-24">
             <h2 class="text-4xl font-bold text-center mb-12 text-gray-900">Más Allá de la Teoría</h2>
             <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-10">
-                <div class="bg-white p-8 rounded-xl shadow-lg border border-gray-200">
+                <div class="interactive-card">
                     <h3 class="text-2xl font-bold mb-6 text-center text-gray-800">💡 ¿Por Qué Aprenderlo?</h3>
                     <ul class="space-y-5">
                         <li class="flex items-start">
@@ -212,7 +237,7 @@
                         </li>
                     </ul>
                 </div>
-                <div class="bg-white p-8 rounded-xl shadow-lg border border-gray-200">
+                <div class="interactive-card">
                     <h3 class="text-2xl font-bold mb-6 text-center text-gray-800">🚀 Aplicaciones Conceptuales</h3>
                     <ul class="space-y-5">
                         <li class="flex items-start">
@@ -244,15 +269,15 @@
         <section id="recursos" class="mb-20 scroll-mt-24">
             <h2 class="text-4xl font-bold text-center mb-12 text-gray-900">Recursos Adicionales</h2>
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-                <a href="https://www.youtube.com/watch?v=iaXLDz_UeYY" target="_blank" class="block anatomy-card text-center">
+                <a href="https://www.youtube.com/watch?v=iaXLDz_UeYY" target="_blank" class="block interactive-card text-center">
                     <h3 class="font-semibold text-lg text-blue-800">🎥 ¿Qué es una Máquina de Turing?</h3>
                     <p class="text-gray-600 mt-2">Una excelente introducción visual de 5 minutos a los conceptos fundamentales.</p>
                 </a>
-                <a href="https://es.wikipedia.org/wiki/M%C3%A1quina_de_Turing" target="_blank" class="block anatomy-card text-center">
+                <a href="https://es.wikipedia.org/wiki/M%C3%A1quina_de_Turing" target="_blank" class="block interactive-card text-center">
                     <h3 class="font-semibold text-lg text-blue-800">📖 Artículo de Wikipedia</h3>
                     <p class="text-gray-600 mt-2">Para una visión general completa de los componentes, la historia y la teoría.</p>
                 </a>
-                <a href="https://turingmachinesimulator.com/" target="_blank" class="block anatomy-card text-center">
+                <a href="https://turingmachinesimulator.com/" target="_blank" class="block interactive-card text-center">
                     <h3 class="font-semibold text-lg text-blue-800">🛠️ Simulador Avanzado</h3>
                     <p class="text-gray-600 mt-2">Un simulador online potente y fácil de usar para probar máquinas más complejas.</p>
                 </a>
@@ -293,6 +318,7 @@
 
     <script>
     document.addEventListener('DOMContentLoaded', () => {
+        // Turing Machine Simulator Logic
         const tapeInput = document.getElementById('tape-input');
         const loadTapeBtn = document.getElementById('load-tape-btn');
         const tapeContainer = document.getElementById('tape-container');
@@ -313,106 +339,33 @@
         const BLANK = '_';
 
         const palindromeRules = {
-            q0: {
-                '0': { write: 'x', move: 'R', nextState: 'q1' },
-                '1': { write: 'x', move: 'R', nextState: 'q2' },
-                [BLANK]: { write: BLANK, move: 'S', nextState: 'q_accept' },
-                'y': { write: 'y', move: 'R', nextState: 'q6' },
-            },
-            q1: { 
-                '0': { write: '0', move: 'R', nextState: 'q1' },
-                '1': { write: '1', move: 'R', nextState: 'q1' },
-                'y': { write: 'y', move: 'R', nextState: 'q1' },
-                [BLANK]: { write: BLANK, move: 'L', nextState: 'q3' },
-            },
-            q2: {
-                '0': { write: '0', move: 'R', nextState: 'q2' },
-                '1': { write: '1', move: 'R', nextState: 'q2' },
-                'y': { write: 'y', move: 'R', nextState: 'q2' },
-                [BLANK]: { write: BLANK, move: 'L', nextState: 'q4' },
-            },
-            q3: { 
-                '0': { write: 'y', move: 'L', nextState: 'q5' },
-                'x': { write: 'x', move: 'S', nextState: 'q_reject' },
-                'y': { write: 'y', move: 'L', nextState: 'q3' },
-                [BLANK]: { write: BLANK, move: 'S', nextState: 'q_reject' },
-                '1': { write: '1', move: 'S', nextState: 'q_reject' },
-            },
-            q4: {
-                '1': { write: 'y', move: 'L', nextState: 'q5' },
-                'x': { write: 'x', move: 'S', nextState: 'q_reject' },
-                'y': { write: 'y', move: 'L', nextState: 'q4' },
-                [BLANK]: { write: BLANK, move: 'S', nextState: 'q_reject' },
-                '0': { write: '0', move: 'S', nextState: 'q_reject' },
-            },
-            q5: {
-                '0': { write: '0', move: 'L', nextState: 'q5' },
-                '1': { write: '1', move: 'L', nextState: 'q5' },
-                'y': { write: 'y', move: 'L', nextState: 'q5' },
-                'x': { write: 'x', move: 'R', nextState: 'q0' },
-            },
-            q6: {
-                'y': { write: 'y', move: 'R', nextState: 'q6' },
-                [BLANK]: { write: BLANK, move: 'S', nextState: 'q_accept' },
-            },
-            q_accept: {},
-            q_reject: {}
+            q0: { '0': { write: 'x', move: 'R', nextState: 'q1' }, '1': { write: 'x', move: 'R', nextState: 'q2' }, [BLANK]: { write: BLANK, move: 'S', nextState: 'q_accept' }, 'y': { write: 'y', move: 'R', nextState: 'q6' },},
+            q1: { '0': { write: '0', move: 'R', nextState: 'q1' }, '1': { write: '1', move: 'R', nextState: 'q1' }, 'y': { write: 'y', move: 'R', nextState: 'q1' }, [BLANK]: { write: BLANK, move: 'L', nextState: 'q3' },},
+            q2: { '0': { write: '0', move: 'R', nextState: 'q2' }, '1': { write: '1', move: 'R', nextState: 'q2' }, 'y': { write: 'y', move: 'R', nextState: 'q2' }, [BLANK]: { write: BLANK, move: 'L', nextState: 'q4' },},
+            q3: { '0': { write: 'y', move: 'L', nextState: 'q5' }, 'x': { write: 'x', move: 'S', nextState: 'q_reject' }, 'y': { write: 'y', move: 'L', nextState: 'q3' }, [BLANK]: { write: BLANK, move: 'S', nextState: 'q_reject' }, '1': { write: '1', move: 'S', nextState: 'q_reject' },},
+            q4: { '1': { write: 'y', move: 'L', nextState: 'q5' }, 'x': { write: 'x', move: 'S', nextState: 'q_reject' }, 'y': { write: 'y', move: 'L', nextState: 'q4' }, [BLANK]: { write: BLANK, move: 'S', nextState: 'q_reject' }, '0': { write: '0', move: 'S', nextState: 'q_reject' },},
+            q5: { '0': { write: '0', move: 'L', nextState: 'q5' }, '1': { write: '1', move: 'L', nextState: 'q5' }, 'y': { write: 'y', move: 'L', nextState: 'q5' }, 'x': { write: 'x', move: 'R', nextState: 'q0' },},
+            q6: { 'y': { write: 'y', move: 'R', nextState: 'q6' }, [BLANK]: { write: BLANK, move: 'S', nextState: 'q_accept' },},
+            q_accept: {}, q_reject: {}
         };
 
         class TuringMachine {
-            constructor(tape, rules) {
-                this.tape = [BLANK, ...tape, BLANK];
-                this.head = 1;
-                this.state = 'q0';
-                this.rules = rules;
-                this.steps = 0;
-                this.halted = false;
-                this.lastRule = null;
-            }
-
+            constructor(tape, rules) { this.tape = [BLANK, ...tape, BLANK]; this.head = 1; this.state = 'q0'; this.rules = rules; this.steps = 0; this.halted = false; this.lastRule = null; }
             step() {
                 if (this.halted) return;
-                
                 const currentState = this.state;
-                if (!this.rules[currentState]) {
-                    this.halted = true;
-                    this.lastRule = null;
-                    return;
-                }
-
+                if (!this.rules[currentState]) { this.halted = true; this.lastRule = null; return; }
                 const currentSymbol = this.tape[this.head];
                 const rule = this.rules[currentState][currentSymbol] || this.rules[currentState][BLANK];
-
-                if (!rule) {
-                    this.state = 'q_reject';
-                    this.halted = true;
-                    this.lastRule = null;
-                    return;
-                }
-                
+                if (!rule) { this.state = 'q_reject'; this.halted = true; this.lastRule = null; return; }
                 this.lastRule = { state: currentState, symbol: currentSymbol };
                 this.tape[this.head] = rule.write;
-                
-                if (rule.move === 'R') {
-                    this.head++;
-                    if (this.head === this.tape.length) this.tape.push(BLANK);
-                } else if (rule.move === 'L') {
-                    this.head--;
-                    if (this.head < 0) {
-                       this.tape.unshift(BLANK);
-                       this.head = 0;
-                    }
-                }
-                
-                this.state = rule.nextState;
-                this.steps++;
-
-                if (this.state === 'q_accept' || this.state === 'q_reject') {
-                    this.halted = true;
-                }
+                if (rule.move === 'R') { this.head++; if (this.head === this.tape.length) this.tape.push(BLANK);
+                } else if (rule.move === 'L') { this.head--; if (this.head < 0) { this.tape.unshift(BLANK); this.head = 0; } }
+                this.state = rule.nextState; this.steps++;
+                if (this.state === 'q_accept' || this.state === 'q_reject') { this.halted = true; }
             }
         }
-
         function renderTape() {
             if (!machine) return;
             tapeContainer.innerHTML = '';
@@ -420,115 +373,148 @@
                 const cell = document.createElement('div');
                 cell.className = 'tape-cell';
                 cell.textContent = symbol;
-                if (index === machine.head) {
-                    cell.classList.add('tape-head');
-                }
+                if (index === machine.head) { cell.classList.add('tape-head'); }
                 tapeContainer.appendChild(cell);
             });
         }
-        
         function updateStatus() {
             if (!machine) return;
             currentStateSpan.textContent = machine.state;
             stepCountSpan.textContent = machine.steps;
-
-            // Highlight rule
             document.querySelectorAll('#rule-table tr').forEach(row => row.classList.remove('rule-highlight'));
             if (machine.lastRule) {
                 const ruleKey = `${machine.lastRule.state},${machine.lastRule.symbol}`;
                 const row = ruleTable.querySelector(`tr[data-rule="${ruleKey}"]`);
                 if(row) row.classList.add('rule-highlight');
-                
                 const rule = machine.rules[machine.lastRule.state][machine.lastRule.symbol];
-                if(rule) {
-                    ruleExplanationP.textContent = `En estado ${machine.lastRule.state}, leyendo '${machine.lastRule.symbol}', escribe '${rule.write}', mueve ${rule.move === 'R' ? 'Derecha' : 'Izquierda'} y cambia a ${rule.nextState}.`;
-                }
-            } else {
-                 ruleExplanationP.textContent = '-';
-            }
-
-
+                if(rule) { ruleExplanationP.textContent = `En estado ${machine.lastRule.state}, leyendo '${machine.lastRule.symbol}', escribe '${rule.write}', mueve ${rule.move === 'R' ? 'Derecha' : 'Izquierda'} y cambia a ${rule.nextState}.`;}
+            } else { ruleExplanationP.textContent = '-'; }
             if (machine.halted) {
                 clearInterval(simulationInterval);
-                runBtn.disabled = true;
-                stepBtn.disabled = true;
-                resetBtn.disabled = false;
-                if (machine.state === 'q_accept') {
-                    finalResultDiv.textContent = '✅ Cadena Aceptada';
-                    finalResultDiv.className = 'text-center text-3xl font-bold h-10 text-green-600';
-                    ruleExplanationP.textContent = '¡Éxito! La máquina se detuvo en el estado de aceptación.';
-                } else {
-                    finalResultDiv.textContent = '❌ Cadena Rechazada';
-                    finalResultDiv.className = 'text-center text-3xl font-bold h-10 text-red-600';
-                    ruleExplanationP.textContent = 'Fallo. La máquina se detuvo en el estado de rechazo o no encontró una regla válida.';
-                }
+                runBtn.disabled = true; stepBtn.disabled = true; resetBtn.disabled = false;
+                if (machine.state === 'q_accept') { finalResultDiv.textContent = '✅ Cadena Aceptada'; finalResultDiv.className = 'text-center text-3xl font-bold h-10 text-green-600'; ruleExplanationP.textContent = '¡Éxito! La máquina se detuvo en el estado de aceptación.';
+                } else { finalResultDiv.textContent = '❌ Cadena Rechazada'; finalResultDiv.className = 'text-center text-3xl font-bold h-10 text-red-600'; ruleExplanationP.textContent = 'Fallo. La máquina se detuvo o no encontró una regla válida.'; }
             }
         }
-
-        function loadTape(value) {
-            const input = value.trim();
-            if (!/^[01]*$/.test(input)) {
-                alert('Por favor, introduce solo 0s y 1s.');
-                return;
-            }
-            initialTape = input.split('');
-            resetMachine();
-        }
-
-        function resetMachine() {
-            clearInterval(simulationInterval);
-            machine = new TuringMachine([...initialTape], palindromeRules);
-            renderTape();
-            updateStatus();
-            finalResultDiv.textContent = '';
-            const hasTape = initialTape.length > 0 || machine.tape.length > 2;
-            runBtn.disabled = !hasTape;
-            stepBtn.disabled = !hasTape;
-            resetBtn.disabled = false;
-        }
-
-        function runSimulation() {
-            if (machine.halted) return;
-            runBtn.disabled = true;
-            stepBtn.disabled = true;
-            resetBtn.disabled = true;
-            const delay = 1050 - speedSlider.value;
-            simulationInterval = setInterval(() => {
-                if (!machine.halted) {
-                    machine.step();
-                    renderTape();
-                    updateStatus();
-                } else {
-                    clearInterval(simulationInterval);
-                    resetBtn.disabled = false;
-                }
-            }, delay);
-        }
-
-        function stepSimulation() {
-            if (!machine.halted) {
-                machine.step();
-                renderTape();
-                updateStatus();
-            }
-        }
-        
+        function loadTape(value) { const input = value.trim(); if (!/^[01]*$/.test(input)) { alert('Por favor, introduce solo 0s y 1s.'); return; } initialTape = input.split(''); resetMachine(); }
+        function resetMachine() { clearInterval(simulationInterval); machine = new TuringMachine([...initialTape], palindromeRules); renderTape(); updateStatus(); finalResultDiv.textContent = ''; const hasTape = initialTape.length > 0 || machine.tape.length > 2; runBtn.disabled = !hasTape; stepBtn.disabled = !hasTape; resetBtn.disabled = false; }
+        function runSimulation() { if (machine.halted) return; runBtn.disabled = true; stepBtn.disabled = true; resetBtn.disabled = true; const delay = 1050 - speedSlider.value; simulationInterval = setInterval(() => { if (!machine.halted) { machine.step(); renderTape(); updateStatus(); } else { clearInterval(simulationInterval); resetBtn.disabled = false; } }, delay); }
+        function stepSimulation() { if (!machine.halted) { machine.step(); renderTape(); updateStatus(); } }
         loadTapeBtn.addEventListener('click', () => loadTape(tapeInput.value));
-        presetBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                const value = btn.getAttribute('data-value');
-                tapeInput.value = value;
-                loadTape(value);
-            })
-        });
-
+        presetBtns.forEach(btn => { btn.addEventListener('click', () => { const value = btn.getAttribute('data-value'); tapeInput.value = value; loadTape(value); }) });
         runBtn.addEventListener('click', runSimulation);
         stepBtn.addEventListener('click', stepSimulation);
         resetBtn.addEventListener('click', resetMachine);
-
-        // Initial state
         loadTape('101');
 
+        // --- Game of Life Logic ---
+        const golCanvas = document.getElementById('game-of-life-canvas');
+        const golCtx = golCanvas.getContext('2d');
+        const golResetBtn = document.getElementById('gol-reset-btn');
+        const resolution = 10;
+        golCanvas.width = 400;
+        golCanvas.height = 400;
+        const COLS = golCanvas.width / resolution;
+        const ROWS = golCanvas.height / resolution;
+        let golGrid;
+        let golInterval;
+
+        function buildGrid() { return new Array(COLS).fill(null).map(() => new Array(ROWS).fill(0)); }
+        function gliderGun(grid) {
+            const pattern = [[5,1],[5,2],[6,1],[6,2],[5,11],[6,11],[7,11],[4,12],[8,12],[3,13],[9,13],[3,14],[9,14],[6,15],[4,16],[8,16],[5,17],[6,17],[7,17],[6,18],[1,21],[2,21],[3,21],[1,22],[2,22],[3,22],[0,23],[4,23],[0,25],[4,25],[5,25],[-1,25],[3,35],[4,35],[3,36],[4,36]];
+            pattern.forEach(([r, c]) => { if (r+5 >= 0 && r+5 < ROWS && c >= 0 && c < COLS) grid[c][r+5] = 1; });
+        }
+        function drawGOL() {
+            golCtx.clearRect(0, 0, golCanvas.width, golCanvas.height);
+            for (let col = 0; col < COLS; col++) {
+                for (let row = 0; row < ROWS; row++) {
+                    const cell = golGrid[col][row];
+                    golCtx.beginPath();
+                    golCtx.rect(col * resolution, row * resolution, resolution, resolution);
+                    golCtx.fillStyle = cell ? '#212529' : '#e9ecef';
+                    golCtx.fill();
+                }
+            }
+        }
+        function nextGen() {
+            const nextGrid = buildGrid();
+            for (let col = 0; col < COLS; col++) {
+                for (let row = 0; row < ROWS; row++) {
+                    let neighbors = 0;
+                    for (let i = -1; i < 2; i++) {
+                        for (let j = -1; j < 2; j++) {
+                            if (i === 0 && j === 0) continue;
+                            const x_cell = col + i;
+                            const y_cell = row + j;
+                            if (x_cell >= 0 && y_cell >= 0 && x_cell < COLS && y_cell < ROWS) {
+                                neighbors += golGrid[x_cell][y_cell];
+                            }
+                        }
+                    }
+                    if (golGrid[col][row] === 1 && (neighbors < 2 || neighbors > 3)) {
+                        nextGrid[col][row] = 0;
+                    } else if (golGrid[col][row] === 0 && neighbors === 3) {
+                        nextGrid[col][row] = 1;
+                    } else {
+                        nextGrid[col][row] = golGrid[col][row];
+                    }
+                }
+            }
+            golGrid = nextGrid;
+            drawGOL();
+        }
+        function startGOL() {
+            clearInterval(golInterval);
+            golGrid = buildGrid();
+            gliderGun(golGrid);
+            drawGOL();
+            golInterval = setInterval(nextGen, 100);
+        }
+        golResetBtn.addEventListener('click', startGOL);
+        startGOL();
+
+        // --- Rule 110 Logic ---
+        const rule110Canvas = document.getElementById('rule-110-canvas');
+        const rule110Ctx = rule110Canvas.getContext('2d');
+        const rule110Btn = document.getElementById('rule110-step-btn');
+        const r110_resolution = 4;
+        rule110Canvas.width = 400;
+        rule110Canvas.height = 400;
+        const r110_COLS = rule110Canvas.width / r110_resolution;
+        let cells = new Array(r110_COLS).fill(0);
+        cells[Math.floor(r110_COLS / 2)] = 1;
+        let generation = 0;
+        const ruleset = [0, 1, 1, 0, 1, 1, 1, 0]; // Rule 110
+
+        function drawRule110() {
+            for (let i = 0; i < cells.length; i++) {
+                if (cells[i] === 1) {
+                    rule110Ctx.fillStyle = '#212529';
+                    rule110Ctx.fillRect(i * r110_resolution, generation * r110_resolution, r110_resolution, r110_resolution);
+                }
+            }
+        }
+        function generateRule110() {
+            if (generation * r110_resolution >= rule110Canvas.height) {
+                 rule110Ctx.clearRect(0, 0, rule110Canvas.width, rule110Canvas.height);
+                 generation = 0;
+                 cells = new Array(r110_COLS).fill(0);
+                 cells[Math.floor(r110_COLS / 2)] = 1;
+            }
+            drawRule110();
+            let nextCells = new Array(cells.length).fill(0);
+            for (let i = 1; i < cells.length - 1; i++) {
+                let left = cells[i - 1];
+                let me = cells[i];
+                let right = cells[i + 1];
+                let ruleIndex = parseInt(`${left}${me}${right}`, 2);
+                nextCells[i] = ruleset[ruleIndex];
+            }
+            cells = nextCells;
+            generation++;
+        }
+        rule110Btn.addEventListener('click', generateRule110);
+        generateRule110();
     });
     </script>
 </body>
